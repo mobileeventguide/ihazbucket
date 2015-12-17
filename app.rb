@@ -13,7 +13,8 @@ class Application < Sinatra::Base
 
   post '/files' do
     obj = bucket.object(upload_file_name)
-    obj.upload_file(params[:upload_files][:tempfile])
+    obj.upload_file params[:upload_files][:tempfile],
+                    content_type: params[:upload_files][:type]
     redirect to('/')
   end
 
