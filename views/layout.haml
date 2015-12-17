@@ -1,0 +1,28 @@
+!!!
+%html.no-js{:lang => ""}
+  %head
+    %meta{:charset => "utf-8"}
+    %meta{:content => "ie=edge", "http-equiv" => "x-ua-compatible"}
+    %title= ENV['APP_TITLE']
+    %meta{:content => "", :name => "description"}
+    %meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}
+    %link{:href => "apple-touch-icon.png", :rel => "apple-touch-icon"}
+    / Place favicon.ico in the root directory
+    %link(rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.2/css/bootstrap.css")
+    :scss
+      body {
+        padding-top: 5rem;
+      }
+  %body
+    %nav.navbar.navbar-fixed-top.navbar-light.bg-faded
+      .container
+        %span.navbar-brand= ENV['APP_TITLE']
+    .container
+      = yield
+    %footer.text-xs-center
+      %hr
+      %p &copy; #{Time.now.year} Mobile Event Guide GmbH.
+
+    %script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js")
+    %script(src="//cdnjs.cloudflare.com/ajax/libs/tether/1.1.1/js/tether.min.js")
+    %script(src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.2/js/bootstrap.min.js")

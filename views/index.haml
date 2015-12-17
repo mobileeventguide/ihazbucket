@@ -1,0 +1,14 @@
+- form_tag '/images', multipart: true, method: :post do
+  .form-group
+    = label_tag :upload_files
+    %label.file
+      = file_field_tag :upload_files, class: 'form-control'
+      %span.file-custom
+  .form-group
+    %button(type='submit' class='btn btn-primary') Upload
+%hr
+.row
+  - @files.to_a.each.with_index do |file, index|
+    - if index % 4 == 0
+      .clearfix
+    = haml :_item, locals: { file: file }
