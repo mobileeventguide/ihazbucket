@@ -4,6 +4,7 @@ source "https://rubygems.org"
 gem 'sinatra'
 gem 'haml'
 gem 'padrino-helpers'
+gem 'sass'
 
 gem 'aws-sdk', '~> 2.2'
 
