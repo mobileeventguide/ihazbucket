@@ -1,0 +1,14 @@
+.row
+  .col-sm-6
+    %dl.dl-horizontal
+      %dt.col-sm-3.text-sm-right Filename:
+      %dd.col-sm-9
+        = @item.key
+      %dt.col-sm-3.text-sm-right URL:
+      %dd.col-sm-9
+        %input{type: 'text', value: @item.public_url, class: 'form-control form-control-sm', readonly: true}
+      %dt.col-sm-3.text-sm-right Last Modified:
+      %dd.col-sm-9
+        = "#{time_ago_in_words(@item.last_modified)} ago"
+  .col-sm-6
+    %img{src: @item.public_url.html_safe, class: 'img-responsive img-thumbnail'}

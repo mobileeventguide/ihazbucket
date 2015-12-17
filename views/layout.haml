@@ -6,8 +6,7 @@
     %title= ENV['APP_TITLE']
     %meta{:content => "", :name => "description"}
     %meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}
-    %link{:href => "apple-touch-icon.png", :rel => "apple-touch-icon"}
-    / Place favicon.ico in the root directory
+    
     %link(rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.2/css/bootstrap.css")
     :scss
       body {
@@ -16,7 +15,7 @@
   %body
     %nav.navbar.navbar-fixed-top.navbar-light.bg-faded
       .container
-        %span.navbar-brand= ENV['APP_TITLE']
+        = link_to ENV['APP_TITLE'], '/', class: 'navbar-brand'
     .container
       = yield
     %footer.text-xs-center

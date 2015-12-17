@@ -8,13 +8,22 @@ class Application < Sinatra::Base
 
   get '/' do
     @files = bucket.objects
-    haml :index
+    haml :index, layout: 'layout'
   end
 
-  post '/images' do
+  post '/files' do
     obj = bucket.object(upload_file_name)
     obj.upload_file(params[:upload_files][:tempfile])
     redirect to('/')
+  end
+
+  get '/files/:key' do
+    @item = bucket.object(CGI.unescape(params[:key]))
+    haml :show, layout: 'layout'
+  end
+
+  def self.protect_from_csrf
+    false
   end
 
   private
