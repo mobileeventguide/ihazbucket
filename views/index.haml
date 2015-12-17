@@ -3,7 +3,9 @@
     .form-group
       = label_tag :upload_files
       = file_field_tag :upload_files
-      %button(type='submit' class='btn btn-primary') Upload
+      %button(type='submit' class='btn btn-primary')
+        %i.fa.fa-cloud-upload
+        Upload
 %hr
 .row
   - @files.to_a.each.with_index do |file, index|
