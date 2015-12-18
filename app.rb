@@ -4,6 +4,7 @@ require 'padrino-helpers'
 require 'aws-sdk'
 
 class Application < Sinatra::Base
+  use Rack::MethodOverride
   register Padrino::Helpers
 
   get '/' do
@@ -21,6 +22,12 @@ class Application < Sinatra::Base
   get '/files/:key' do
     @item = bucket.object(CGI.unescape(params[:key]))
     haml :show, layout: 'layout'
+  end
+
+  delete '/files/:key' do
+    item = bucket.object(CGI.unescape(params[:key]))
+    item.delete
+    redirect to('/')
   end
 
   def self.protect_from_csrf
