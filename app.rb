@@ -7,6 +7,12 @@ class Application < Sinatra::Base
   use Rack::MethodOverride
   register Padrino::Helpers
 
+  if ENV['AUTH_USERNAME'].present? && ENV['AUTH_PASSWORD'].present?
+    use Rack::Auth::Basic, "Protected Area" do |username, password|
+      username == ENV['AUTH_USERNAME'] && password == ENV['AUTH_PASSWORD']
+    end
+  end
+
   get '/' do
     @files = bucket.objects
     haml :index, layout: 'layout'
