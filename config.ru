@@ -3,8 +3,10 @@ require 'bundler'
 
 Bundler.require
 
-require 'dotenv'
-Dotenv.load
+if ENV['RACK_ENV'] == 'development'
+  require 'dotenv'
+  Dotenv.load
+end
 
 require './app'
 run Application
