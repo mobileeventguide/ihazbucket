@@ -1,4 +1,6 @@
+[![Build Status](https://travis-ci.org/mobileeventguide/ihazbucket.svg?branch=master)](https://travis-ci.org/mobileeventguide/ihazbucket)
 [![Stories in Ready](https://badge.waffle.io/mobileeventguide/ihazbucket.png?label=ready&title=Ready)](https://waffle.io/mobileeventguide/ihazbucket)
+
 ![ihazbucket](http://i0.kym-cdn.com/photos/images/original/000/000/026/lolrus.jpg)
 
 # I Haz Bucket
