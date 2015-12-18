@@ -19,13 +19,13 @@ class Application < Sinatra::Base
     redirect to('/')
   end
 
-  get '/files/:key' do
-    @item = bucket.object(CGI.unescape(params[:key]))
+  get '/files/:key' do |key|
+    @item = bucket.object(CGI.unescape(key))
     haml :show, layout: 'layout'
   end
 
-  delete '/files/:key' do
-    item = bucket.object(CGI.unescape(params[:key]))
+  delete '/files/:key' do |key|
+    item = bucket.object(CGI.unescape(key))
     item.delete
     redirect to('/')
   end
