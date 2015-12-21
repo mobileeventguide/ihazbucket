@@ -20,13 +20,11 @@
     .container
       - if flash[:notice]
         .alert.alert-success(role='alert')
-          %button(type='button' class='close' data-dismiss='alert' aria-label='Close')
-            %span(aria-hidden='true') &times;
+          = alert_dismiss
           = flash[:notice]
       - if flash[:error]
         .alert.alert-danger(role='alert')
-          %button(type='button' class='close' data-dismiss='alert' aria-label='Close')
-            %span(aria-hidden='true') &times;
+          = alert_dismiss
           = flash[:error]
       = yield
     %footer.text-xs-center
