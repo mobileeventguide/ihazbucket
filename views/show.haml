@@ -14,6 +14,6 @@
       onsubmit: 'return confirm("Are you sure you want to delete this file?")' do
       = button_tag 'Delete File', type: :submit, class: 'btn btn-danger btn-sm'
 
-
-  .col-sm-6
-    %img{src: @item.public_url.html_safe, class: 'img-responsive img-thumbnail'}
+  - if @item.content_type =~ /image\/.*/
+    .col-sm-6
+      %img{src: @item.public_url.html_safe, class: 'img-responsive img-thumbnail'}
