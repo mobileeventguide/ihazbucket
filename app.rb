@@ -1,11 +1,17 @@
 require 'sinatra/base'
+require 'rack-flash'
 require 'tilt/haml'
 require 'padrino-helpers'
 require 'aws-sdk'
 
+require_relative 'helpers/app_helpers'
+
 class Application < Sinatra::Base
+  enable :sessions
+  use Rack::Flash
   use Rack::MethodOverride
   register Padrino::Helpers
+  helpers AppHelpers
 
   if ENV['AUTH_USERNAME'].present? && ENV['AUTH_PASSWORD'].present?
     use Rack::Auth::Basic, "Protected Area" do |username, password|
@@ -19,9 +25,14 @@ class Application < Sinatra::Base
   end
 
   post '/files' do
-    obj = bucket.object(upload_file_name)
-    obj.upload_file params[:upload_files][:tempfile],
-                    content_type: params[:upload_files][:type]
+    if params[:upload_files].present?
+      obj = bucket.object(upload_file_name)
+      obj.upload_file params[:upload_files][:tempfile],
+                      content_type: params[:upload_files][:type]
+      flash[:notice] = "Added file <strong>#{upload_file_name}</strong>.".html_safe
+    else
+      flash[:error] = "Please select a file to upload."
+    end
     redirect to('/')
   end
 
@@ -33,6 +44,7 @@ class Application < Sinatra::Base
   delete '/files/:key' do |key|
     item = bucket.object(CGI.unescape(key))
     item.delete
+    flash[:notice] = "Removed file <strong>#{CGI.unescape(key)}</strong>.".html_safe
     redirect to('/')
   end
 
