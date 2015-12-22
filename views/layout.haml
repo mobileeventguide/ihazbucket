@@ -18,6 +18,14 @@
       .container
         = link_to ENV['APP_TITLE'], '/', class: 'navbar-brand'
     .container
+      - if flash[:notice]
+        .alert.alert-success(role='alert')
+          = alert_dismiss
+          = flash[:notice]
+      - if flash[:error]
+        .alert.alert-danger(role='alert')
+          = alert_dismiss
+          = flash[:error]
       = yield
     %footer.text-xs-center
       %hr

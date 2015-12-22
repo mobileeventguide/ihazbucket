@@ -10,16 +10,21 @@ describe Application do
 
   let(:objects) { [] }
 
-  let(:file) do
+  let(:object) do
     double( key: 'foobar.png', public_url: 'http://example.com/foobar.png',
-            last_modified: Time.now )
+            last_modified: Time.now, content_type: 'image/png' )
+  end
+
+  let(:object_summary) do
+    double( key: 'foobar.png', public_url: 'http://example.com/foobar.png',
+            last_modified: Time.now, object: object )
   end
 
   before do
     allow_any_instance_of(Application).to receive_message_chain(:bucket, :objects)
       .and_return(objects)
     allow_any_instance_of(Application).to receive_message_chain(:bucket, :object)
-      .and_return(file)
+      .and_return(object)
   end
 
   describe "GET '/'" do
@@ -29,14 +34,14 @@ describe Application do
     it { expect(last_response.body).to include('I HAZ BUCKET') }
 
     context 'with files' do
-      let(:objects) { [file] }
+      let(:objects) { [object_summary] }
       it { expect(last_response.body).to include('foobar.png') }
     end
   end
 
   describe "POST '/files'" do
     before do
-      allow(file).to receive(:upload_file)
+      allow(object).to receive(:upload_file)
       post '/files', upload_files: { filename: 'foobar.png', type: 'image/png' }
     end
 
@@ -53,7 +58,7 @@ describe Application do
 
   describe "DELETE '/files/:key'" do
     before do
-      allow(file).to receive(:delete)
+      allow(object).to receive(:delete)
       post '/files/foobar.png', _method: 'delete'
     end
 

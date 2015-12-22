@@ -1,6 +1,10 @@
 .col-sm-3
   .card
     = link_to "/files/#{CGI.escape(file.key)}" do
-      %img.card-img-top.img-fluid{src:file.public_url}
+      - if file.object.content_type =~ /image\/.*/
+        %img.card-img-top.img-fluid{src:file.public_url}
+      - else
+        .card-block.text-xs-center
+          %i.fa.fa-file-o.fa-4x
       .card-block
         %p.card-text= file.key
