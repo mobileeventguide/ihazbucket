@@ -8,11 +8,13 @@ require 'rack/test'
 describe Application do
   include Rack::Test::Methods
 
+  let(:bucket) { double(objects: objects) }
+
   let(:objects) { [] }
 
   let(:object) do
     double( key: 'foobar.png', public_url: 'http://example.com/foobar.png',
-            last_modified: Time.now, content_type: 'image/png' )
+            last_modified: Time.now, content_type: 'image/png', exists?: false )
   end
 
   let(:object_summary) do
@@ -21,10 +23,8 @@ describe Application do
   end
 
   before do
-    allow_any_instance_of(Application).to receive_message_chain(:bucket, :objects)
-      .and_return(objects)
-    allow_any_instance_of(Application).to receive_message_chain(:bucket, :object)
-      .and_return(object)
+    allow_any_instance_of(Application).to receive(:bucket).and_return(bucket)
+    allow(bucket).to receive(:object).and_return(object)
   end
 
   describe "GET '/'" do
@@ -40,12 +40,25 @@ describe Application do
   end
 
   describe "POST '/files'" do
-    before do
-      allow(object).to receive(:upload_file)
+    before { allow(object).to receive(:upload_file) }
+
+    it 'responds with a redirect' do
       post '/files', upload_files: { filename: 'foobar.png', type: 'image/png' }
+      expect(last_response).to be_redirect
     end
 
-    it { expect(last_response).to be_redirect }
+    context 'duplicate filename' do
+      before do
+        allow(bucket).to receive(:object).with('foobar.png')
+          .and_return(double(exists?: true))
+      end
+
+      it 'should add suffix to filename' do
+        expect(bucket).to     receive(:object).with('foobar_1.png')
+        expect(bucket).to_not receive(:object).with('foobar_2.png')
+        post '/files', upload_files: { filename: 'foobar.png', type: 'image/png' }
+      end
+    end
   end
 
   describe "GET '/files/:key'" do
