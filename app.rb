@@ -26,10 +26,10 @@ class Application < Sinatra::Base
 
   post '/files' do
     if params[:upload_files].present?
-      obj = bucket.object(upload_file_name)
+      obj = upload_object
       obj.upload_file params[:upload_files][:tempfile],
                       content_type: params[:upload_files][:type]
-      flash[:notice] = "Added file <strong>#{upload_file_name}</strong>.".html_safe
+      flash[:notice] = "Added file <strong>#{params[:upload_files][:filename]}</strong>.".html_safe
     else
       flash[:error] = "Please select a file to upload."
     end
@@ -58,7 +58,15 @@ class Application < Sinatra::Base
     @_bucket ||= Aws::S3::Resource.new.bucket(ENV['S3_BUCKET'])
   end
 
-  def upload_file_name
-    params[:upload_files][:filename]
+  def upload_object
+    filename = Pathname.new(params[:upload_files][:filename])
+    suffix = 0
+    object = bucket.object(filename.to_s)
+    while object.exists?
+      suffix += 1
+      object = bucket.object [filename.basename('.*').to_s, "_#{suffix}",
+        filename.extname.to_s].join
+    end
+    object
   end
 end
