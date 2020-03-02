@@ -35,12 +35,12 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
-    rake (10.4.2)
+    rake (12.3.3)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
       rspec-mocks (~> 3.4.0)
-    rspec-core (3.4.1)
+    rspec-core (3.4.4)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -76,4 +76,4 @@ DEPENDENCIES
   sinatra
 
 BUNDLED WITH
-   1.17.3
+   2.1.2
